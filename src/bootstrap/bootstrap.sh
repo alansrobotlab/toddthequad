@@ -12,6 +12,12 @@ if ! [ $? -eq 0 ]; then
 	exit
 fi
 
+sudo apt update
+sudo apt upgrade -y
+
+sudo apt install -y \
+	dirmngr
+
 if ! grep "source /opt/ros/melodic/setup.bash" ~/.bashrc
 	then echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 fi
