@@ -43,12 +43,14 @@ if ! grep "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" /etc/
 fi
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 
-#codebuilds key
+message "Adding codebuilds key..."
 sudo wget -qO - https://packagecloud.io/headmelted/codebuilds/gpgkey | sudo apt-key add -;
 
+message "Checking for updates again after repositories were added..."
 sudo apt update
 sudo apt upgrade -y
 
+message "Installing ROS dependencies..."
 sudo apt install -y \
 	python-rosdep \
 	python-rosinstall-generator \
@@ -56,12 +58,12 @@ sudo apt install -y \
 	python-rosinstall \
 	build-essential
 
+message "Running rosdep init and update..."
 sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
 sudo rosdep init
 rosdep update
 
-# All Opencv3 Install Dependencies
-
+message "Installing all opencv3 dependencies..."
 sudo apt install -y \
 	build-essential \
 	cmake \
@@ -87,10 +89,12 @@ sudo apt install -y \
 	libhdf5-cpp-100 \
 	caffe-cpu
 
+message "pip3 install of tensorflow..."
 sudo pip3 install numpy scipy tensorflow
 
 # All ROS Melodic Stretch Install Dependencies
 
+message "Installing ROS Melodic Desktop dependencies..."
 sudo apt install -y\
 	python-opencv \
 	python-matplotlib \
@@ -171,38 +175,39 @@ sudo apt install -y\
 	qtbase5-dev \
 	pkg-config
 
-# install samba filesharing tools
+message "Installing Samba filesharing tools..."
 sudo apt-get install -y \
 	samba \
 	samba-common-bin \
 	smbclient cifs-utils
 
+message "Installing adafruit servokit..."
 sudo pip3 install adafruit-circuitpython-servokit
 
-# install python and python3 gpiozero library
+message "Installing gpizero libraries..."
 sudo apt install -y \
 	python-gpiozero \
 	python3-gpiozero
 
-# install precompiled compatible version of tinyxml2
+message "Installing precompiled version of tinyxml2..."
 #if [ ! -f ./install/tinyxml2.deb]; then
 	curl -L -o install/tinyxml2.deb "https://drive.google.com/uc?export=download&id=1gPy43-KhkPrssxgwSfDcRI4xp3iahKsy"
 #fi
 sudo dpkg -i ./install/tinyxml2.deb
 
-# install precompiled compatible version of opencv (raspi 0,1,2 compatible)
+message "Installing precompiled compatible version of opencv3 (raspi 0,1,2 compatible)///"
 #if [ ! -f ./install/opencv.deb]; then
 	curl -L -o install/opencv.deb "https://drive.google.com/uc?export=download&id=1i8RBgxMXuCMxyIPgjWoHWeX7xmEmuM23"
 #fi
 sudo dpkg -i ./install/opencv.deb
 
-# install precompiled version of ros melodic desktop + perception + robot + joy(stick)
+message "Installing precompiled version of ros melodic desktop + perception + robot + joy(stick)///"
 #if [ ! -f ./install/ros_desktop.tar.bz2]; then
 	curl -L -o install/ros_desktop.tar.bz2 "https://drive.google.com/uc?export=download&id=1ffIgOm6M6TicZbAcWjK7va_A33rBHrs4"
 #fi
 sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
 
-# install precompiled version of code-oss (visual studio code)
+message "Installing precompiled version of Visual Studio Code (code-oss)"
 # https://code.headmelted.com
 # https://github.com/headmelted/codebuilds
 #if [ ! -f ./install/code-oss.deb]; then 
@@ -210,12 +215,12 @@ sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
 #fi
 sudo dpkg -i ./install/code-oss.deb
 
-# increase swap file size
+message "Increasing swapfile to 1Gb..."
 sudo dphys-swapfile swapoff
 sudo cp install/dphys-swapfile /etc/dphys-swapfile
 sudo dphys-swapfile swapon
 
-# configure samba
+message "Configuring Samba filesharing..."
 sudo systemctl smbd stop
 sudo cp install/smb.conf /etc/samba/smb.conf
 echo ""
@@ -225,7 +230,7 @@ echo "--------------------------------------------------------------------"
 #sudo smbpasswd -a pi
 sudo systemctl smbd start
 
-# install create_ap
+message "Installing create_ap (Raspi as an access point)..."
 # https://github.com/oblique/create_ap
 sudo apt install -y \
 	util-linux \
@@ -243,3 +248,5 @@ sudo make install
 sudo create_ap -n wlan0 todd toddthequad
 #sudo systemctl enable create_ap
 #sudo systemctl start create_ap
+
+message "DONE!!!!"
