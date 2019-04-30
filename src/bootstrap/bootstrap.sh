@@ -8,7 +8,10 @@ message () {
 	echo ""
 }
 
+message "Attempting to stop the create_ap access point (if it's running)..."
 sudo systemctl stop create_ap
+
+message "Checking for internet connectivity..."
 wget -q --spider http://google.com
 
 if ! [ $? -eq 0 ]; then
