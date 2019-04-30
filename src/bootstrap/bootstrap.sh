@@ -1,5 +1,13 @@
 #!/bin/bash
 
+message () {
+	echo ""
+	echo "-----------------------------------------------------------"
+	echo "$1"
+	echo "-----------------------------------------------------------"
+	echo ""
+}
+
 sudo systemctl stop create_ap
 wget -q --spider http://google.com
 
@@ -12,12 +20,15 @@ if ! [ $? -eq 0 ]; then
 	exit
 fi
 
+message "Checking for updates..."
 sudo apt update
 sudo apt upgrade -y
 
+message "Installing drmngr..."
 sudo apt install -y \
 	dirmngr
 
+message "Adding ros pathes to ~/.bashrc..."
 if ! grep "source /opt/ros/melodic/setup.bash" ~/.bashrc
 	then echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 fi
@@ -26,6 +37,7 @@ if ! grep "source /home/pi/toddthequad/devel/setup.bash" ~/.bashrc
 	then echo "source /home/pi/toddthequad/devel/setup.bash" >> ~/.bashrc
 fi 
 
+message "Adding ros repositories"
 if ! grep "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" /etc/apt/sources.list.d/ros-latest.list
 	then sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 fi
@@ -37,7 +49,12 @@ sudo wget -qO - https://packagecloud.io/headmelted/codebuilds/gpgkey | sudo apt-
 sudo apt update
 sudo apt upgrade -y
 
-sudo apt install python-rosdep python-rosinstall-generator python-wstool python-rosinstall build-essential
+sudo apt install -y \
+	python-rosdep \
+	python-rosinstall-generator \
+	python-wstool \
+	python-rosinstall \
+	build-essential
 
 sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
 sudo rosdep init
