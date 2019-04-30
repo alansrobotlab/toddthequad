@@ -16,9 +16,9 @@ wget -q --spider http://google.com
 
 if ! [ $? -eq 0 ]; then
 	echo ""
-    echo "Raspi is not currently connected to the internet." \
-	echo "Please connect to the internet and run this script again" \
-	echo "Exiting..."  \
+    echo "Raspi is not currently connected to the internet." 
+	echo "Please connect to the internet and run this script again" 
+	echo "Exiting..." 
 	echo ""
 	exit
 fi
@@ -51,8 +51,9 @@ if ! grep "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" /etc/
 fi
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 
-message "Adding codebuilds key..."
-sudo wget -qO - https://packagecloud.io/headmelted/codebuilds/gpgkey | sudo apt-key add -;
+# removed, headmelted build of code-oss does not run on pi zero
+# message "Adding codebuilds key..."
+# sudo wget -qO - https://packagecloud.io/headmelted/codebuilds/gpgkey | sudo apt-key add -;
 
 message "Checking for updates again after repositories were added..."
 sudo apt update
@@ -215,13 +216,12 @@ message "Installing precompiled version of ros melodic desktop + perception + ro
 #fi
 sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
 
-message "Installing precompiled version of Visual Studio Code (code-oss)"
-# https://code.headmelted.com
-# https://github.com/headmelted/codebuilds
-#if [ ! -f ./install/code-oss.deb]; then 
-	curl -L -o install/code-oss.deb "https://github.com/headmelted/codebuilds/releases/download/20-Feb-19/code-oss_1.32.0-1550644722_armhf.deb"
-#fi
-sudo dpkg -i ./install/code-oss.deb
+message "Installing precompiled version of Visual Studio Code (vscode-arm)"
+# https://github.com/stevedesmond-ca/vscode-arm
+# https://www.raspberrypi.org/forums/viewtopic.php?t=191342#p1440607
+cd ./install
+wget https://github.com/stevedesmond-ca/vscode-arm/releases/download/1.28.2/vscode-1.28.2.deb
+sudo apt install ./vscode-1.28.2.deb
 
 message "Configuring Samba filesharing..."
 sudo systemctl smbd stop
@@ -244,7 +244,6 @@ sudo apt install -y \
 	dnsmasq \
 	iptables
 
-cd install
 git clone https://github.com/oblique/create_ap
 cd create_ap
 sudo make install
@@ -252,4 +251,12 @@ sudo create_ap -n wlan0 todd toddthequad
 #sudo systemctl enable create_ap
 #sudo systemctl start create_ap
 
+message "Initializing toddthequad ros workspace..."
+source ~/.bashrc
+cd ~/toddthequad
+catkin_make
+
 message "DONE!!!!"
+message "OK, now there are a few more things that you need to do\n  before you can get started."
+message "First, run the following command in a command prompt\n to set the sambe filesharing password for user 'pi'\n (Must be at least 8 characters)\n]\nsudo smbpasswd -a pi"
+message "Next, disconnect from your wifi network and run\n the following command to set up your pi as an access point\n\nTBD\n"
