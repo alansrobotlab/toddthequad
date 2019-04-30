@@ -23,6 +23,11 @@ if ! [ $? -eq 0 ]; then
 	exit
 fi
 
+message "Increasing swapfile to 1Gb..."
+sudo dphys-swapfile swapoff
+sudo cp install/dphys-swapfile /etc/dphys-swapfile
+sudo dphys-swapfile swapon
+
 message "Checking for updates..."
 sudo apt update
 sudo apt upgrade -y
@@ -217,11 +222,6 @@ message "Installing precompiled version of Visual Studio Code (code-oss)"
 	curl -L -o install/code-oss.deb "https://github.com/headmelted/codebuilds/releases/download/20-Feb-19/code-oss_1.32.0-1550644722_armhf.deb"
 #fi
 sudo dpkg -i ./install/code-oss.deb
-
-message "Increasing swapfile to 1Gb..."
-sudo dphys-swapfile swapoff
-sudo cp install/dphys-swapfile /etc/dphys-swapfile
-sudo dphys-swapfile swapon
 
 message "Configuring Samba filesharing..."
 sudo systemctl smbd stop
