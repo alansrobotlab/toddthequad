@@ -15,11 +15,12 @@ message "Checking for internet connectivity..."
 wget -q --spider http://google.com
 
 if ! [ $? -eq 0 ]; then
-	echo ""
-    echo "Raspi is not currently connected to the internet." 
-	echo "Please connect to the internet and run this script again" 
-	echo "Exiting..." 
-	echo ""
+	#echo ""
+    #echo "Raspi is not currently connected to the internet." 
+	#echo "Please connect to the internet and run this script again" 
+	#echo "Exiting..." 
+	#echo ""
+	message "\nRaspi is not currently connected to the internet.\nPlease connect to the internet and run this script again\nExiting...\n\n"
 	exit
 fi
 
