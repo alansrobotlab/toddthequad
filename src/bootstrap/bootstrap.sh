@@ -251,11 +251,13 @@ sudo systemctl enable create_ap
 #sudo systemctl start create_ap
 
 message "Initializing toddthequad ros workspace..."
-source ~/.bashrc
+sh ~/.bashrc
 cd ~/toddthequad
 catkin_make
+sh ~/.bashrc
 
 message "\
+\n\
 DONE!!!! \n\
 \n\
 \n\
@@ -270,15 +272,15 @@ First, run the following command in a command prompt \n\
  sudo smbpasswd -a pi \n\
  \n\
  \n\
-Next, disconnect from your wifi network and run \n 
+Next, disconnect from your wifi network and run \n \
  the following command to set up your pi as an access point \n\
- \n
+ \n\
  sudo iw wlan0 disconnect (to disconnect wifi) \n\
  sudo systemctl enable create_ap (set access point to begin automatically) \n\
  sudo systemctl start create_ap (to start the create_ap access point)\n\
  \n\
  \n\
 Finally, run the following command to enable ssh, the camera and i2c \n\
- \n\ 
+ \n\
  sudo rc-gui (for the gui config tool) \n\
  sudo raspi-config (for the command line tool) \n"
