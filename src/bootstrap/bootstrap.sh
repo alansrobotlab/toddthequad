@@ -46,7 +46,7 @@ if ! grep "source /home/pi/toddthequad/devel/setup.bash" ~/.bashrc
 	then echo "source /home/pi/toddthequad/devel/setup.bash" >> ~/.bashrc
 fi 
 
-message "Adding ros repositories"
+message "Adding ros repositories..."
 if ! grep "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" /etc/apt/sources.list.d/ros-latest.list
 	then sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 fi
@@ -205,19 +205,19 @@ message "Installing precompiled version of tinyxml2..."
 #fi
 sudo dpkg -i ./install/tinyxml2.deb
 
-message "Installing precompiled compatible version of opencv3 (raspi 0,1,2 compatible)///"
+message "Installing precompiled compatible version of opencv3 (raspi 0,1,2 compatible)..."
 #if [ ! -f ./install/opencv.deb]; then
 	curl -L -o install/opencv.deb "https://drive.google.com/uc?export=download&id=1i8RBgxMXuCMxyIPgjWoHWeX7xmEmuM23"
 #fi
 sudo dpkg -i ./install/opencv.deb
 
-message "Installing precompiled version of ros melodic desktop + perception + robot + joy(stick)///"
+message "Installing precompiled version of ros melodic desktop + perception + robot + joy(stick)..."
 #if [ ! -f ./install/ros_desktop.tar.bz2]; then
 	curl -L -o install/ros_desktop.tar.bz2 "https://drive.google.com/uc?export=download&id=1ffIgOm6M6TicZbAcWjK7va_A33rBHrs4"
 #fi
 sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
 
-message "Installing precompiled version of Visual Studio Code (vscode-arm)"
+message "Installing precompiled version of Visual Studio Code (vscode-arm)..."
 # https://github.com/stevedesmond-ca/vscode-arm
 # https://www.raspberrypi.org/forums/viewtopic.php?t=191342#p1440607
 cd ./install
@@ -227,11 +227,9 @@ sudo apt install ./vscode-1.28.2.deb
 message "Configuring Samba filesharing..."
 sudo systemctl smbd stop
 sudo cp install/smb.conf /etc/samba/smb.conf
-echo ""
-echo "--------------------------------------------------------------------"
-echo " Now, please enter in a samba (windows filesharing) password for use"
-echo "--------------------------------------------------------------------"
-#sudo smbpasswd -a pi
+
+message "Now, please enter in a samba (windows filesharing) password for use"
+sudo smbpasswd -a pi
 sudo systemctl smbd start
 
 message "Installing create_ap (Raspi as an access point)..."
@@ -248,8 +246,8 @@ sudo apt install -y \
 git clone https://github.com/oblique/create_ap
 cd create_ap
 sudo make install
-sudo create_ap -n wlan0 todd toddthequad
-#sudo systemctl enable create_ap
+sudo create_ap -n wlan0 todd toddthequad --mkconfig /etc/create_ap.conf
+sudo systemctl enable create_ap
 #sudo systemctl start create_ap
 
 message "Initializing toddthequad ros workspace..."
@@ -257,7 +255,30 @@ source ~/.bashrc
 cd ~/toddthequad
 catkin_make
 
-message "DONE!!!!"
-message "OK, now there are a few more things that you need to do\n  before you can get started."
-message "First, run the following command in a command prompt\n to set the sambe filesharing password for user 'pi'\n (Must be at least 8 characters)\n]\nsudo smbpasswd -a pi"
-message "Next, disconnect from your wifi network and run\n the following command to set up your pi as an access point\n\nTBD\n"
+message "\
+DONE!!!! \n\
+\n\
+\n\
+OK, now there are a few more things that you need to do \n\
+ before you can get started. \n\
+ \n\
+ \n\
+First, run the following command in a command prompt \n\
+ to set the samba filesharing password \n\
+ for user 'pi'\n (Must be at least 8 characters) \n\
+ \n\
+ sudo smbpasswd -a pi \n\
+ \n\
+ \n\
+Next, disconnect from your wifi network and run \n 
+ the following command to set up your pi as an access point \n\
+ \n
+ sudo iw wlan0 disconnect (to disconnect wifi) \n\
+ sudo systemctl enable create_ap (set access point to begin automatically) \n\
+ sudo systemctl start create_ap (to start the create_ap access point)\n\
+ \n\
+ \n\
+Finally, run the following command to enable ssh, the camera and i2c \n\
+ \n\ 
+ sudo rc-gui (for the gui config tool) \n\
+ sudo raspi-config (for the command line tool) \n"
