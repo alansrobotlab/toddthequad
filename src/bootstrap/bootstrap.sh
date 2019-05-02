@@ -3,7 +3,9 @@
 message () {
 	echo ""
 	echo "-----------------------------------------------------------"
+	echo ""
 	echo "$1"
+	echo ""
 	echo "-----------------------------------------------------------"
 	echo ""
 }
@@ -217,7 +219,8 @@ message "Installing precompiled version of ros melodic desktop + perception + ro
 #fi
 sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
 
-message "Installing precompiled version of Visual Studio Code (vscode-arm)..."
+message "Installing precompiled version of Visual Studio Code (vscode-arm)...\n\
+ (although this currently will not run on the Zero because of electron)"
 # https://github.com/stevedesmond-ca/vscode-arm
 # https://www.raspberrypi.org/forums/viewtopic.php?t=191342#p1440607
 cd ./install
@@ -247,7 +250,7 @@ git clone https://github.com/oblique/create_ap
 cd create_ap
 sudo make install
 sudo create_ap -n wlan0 todd toddthequad --mkconfig /etc/create_ap.conf
-sudo systemctl enable create_ap
+#sudo systemctl enable create_ap
 #sudo systemctl start create_ap
 
 message "Initializing toddthequad ros workspace..."
@@ -276,7 +279,7 @@ Next, disconnect from your wifi network and run \n \
  the following command to set up your pi as an access point \n\
  \n\
  sudo iw wlan0 disconnect (to disconnect wifi) \n\
- sudo systemctl enable create_ap (set access point to begin automatically) \n\
+ sudo systemctl enable create_ap (set access point to begin automatically on startup) \n\
  sudo systemctl start create_ap (to start the create_ap access point)\n\
  \n\
  \n\
