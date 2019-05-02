@@ -226,6 +226,7 @@ message "Installing precompiled version of Visual Studio Code (vscode-arm)...\n\
 cd ./install
 wget https://github.com/stevedesmond-ca/vscode-arm/releases/download/1.28.2/vscode-1.28.2.deb
 sudo apt install ./vscode-1.28.2.deb
+cd ~/toddthequad
 
 message "Configuring Samba filesharing..."
 sudo systemctl smbd stop

@@ -1,2 +1,7 @@
-# toddthequad
-ToddTheQuad is a low cost 3d printable ROS robot
+# Todd the Quad
+toddthequad is a:
+* small
+* low cost
+* 3d printable 
+* ROS robot
+  
