@@ -218,6 +218,7 @@ message "Installing precompiled version of ros melodic desktop + perception + ro
 	curl -L -o install/ros_desktop.tar.bz2 "https://drive.google.com/uc?export=download&id=1ffIgOm6M6TicZbAcWjK7va_A33rBHrs4"
 #fi
 sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
+sudo cp /usr/local/lib/libtinyxml2.so.7 /opt/ros/melodic/lib/
 
 message "Installing precompiled version of Visual Studio Code (vscode-arm)...\n\
  (although this currently will not run on the Zero because of electron)"
@@ -229,12 +230,12 @@ sudo apt install ./vscode-1.28.2.deb
 cd ~/toddthequad
 
 message "Configuring Samba filesharing..."
-sudo systemctl smbd stop
+sudo systemctl stop smbd
 sudo cp install/smb.conf /etc/samba/smb.conf
 
 message "Now, please enter in a samba (windows filesharing) password for use"
 sudo smbpasswd -a pi
-sudo systemctl smbd start
+sudo systemctl start smbd
 
 message "Installing create_ap (Raspi as an access point)..."
 # https://github.com/oblique/create_ap
