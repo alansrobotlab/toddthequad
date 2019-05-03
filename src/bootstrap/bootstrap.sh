@@ -204,7 +204,7 @@ sudo apt install -y \
 message "Installing precompiled version of tinyxml2..."
 # required for rospack,
 #if [ ! -f ./install/tinyxml2.deb]; then
-	curl -L -o install/tinyxml2.deb "https://drive.google.com/uc?export=download&id=1gPy43-KhkPrssxgwSfDcRI4xp3iahKsy"
+	curl -L -o install/tinyxml2.deb "https://drive.google.com/uc?export=download&id=1j0hL8lUbaIuSzL7xx3Mps9ah4lVTr3NG"
 #fi
 sudo dpkg -i ./install/tinyxml2.deb
 
