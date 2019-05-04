@@ -202,23 +202,25 @@ sudo apt install -y \
 	python3-gpiozero
 
 message "Installing precompiled version of tinyxml2..."
+# required for rospack,
 #if [ ! -f ./install/tinyxml2.deb]; then
-	curl -L -o install/tinyxml2.deb "https://drive.google.com/uc?export=download&id=1gPy43-KhkPrssxgwSfDcRI4xp3iahKsy"
+	curl -L -o install/tinyxml2.deb "https://drive.google.com/uc?export=download&id=1j0hL8lUbaIuSzL7xx3Mps9ah4lVTr3NG"
 #fi
-sudo dpkg -i ./install/tinyxml2.deb
+sudo dpkg -i --force-all ./install/tinyxml2.deb
 
 message "Installing precompiled compatible version of opencv3 (raspi 0,1,2 compatible)..."
 #if [ ! -f ./install/opencv.deb]; then
 	curl -L -o install/opencv.deb "https://drive.google.com/uc?export=download&id=1i8RBgxMXuCMxyIPgjWoHWeX7xmEmuM23"
 #fi
-sudo dpkg -i ./install/opencv.deb
+sudo dpkg -i --force-all ./install/opencv.deb
 
 message "Installing precompiled version of ros melodic desktop + perception + robot + joy(stick)..."
 #if [ ! -f ./install/ros_desktop.tar.bz2]; then
 	curl -L -o install/ros_desktop.tar.bz2 "https://drive.google.com/uc?export=download&id=1ffIgOm6M6TicZbAcWjK7va_A33rBHrs4"
 #fi
 sudo tar xjf ./install/ros_desktop.tar.bz2 -C /
-sudo cp /usr/local/lib/libtinyxml2.so.7 /opt/ros/melodic/lib/
+# for some reason this is now required
+sudo cp /usr/local/lib/libtinyxml.so.7.0.1 /usr/ros/melodic/lib/libtinyxml.so.7
 
 message "Installing precompiled version of Visual Studio Code (vscode-arm)...\n\
  (although this currently will not run on the Zero because of electron)"
