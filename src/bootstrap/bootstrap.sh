@@ -193,8 +193,8 @@ sudo apt-get install -y \
 	samba-common-bin \
 	smbclient cifs-utils
 
-message "Installing adafruit servokit..."
-sudo pip3 install adafruit-circuitpython-servokit
+#message "Installing adafruit servokit..."
+#sudo pip3 install adafruit-circuitpython-servokit
 
 message "Installing gpizero libraries..."
 sudo apt install -y \
@@ -206,15 +206,15 @@ message "Installing precompiled version of tinyxml2..."
 #if [ ! -f ./install/tinyxml2.deb]; then
 	curl -L -o install/tinyxml2.deb "https://drive.google.com/uc?export=download&id=1j0hL8lUbaIuSzL7xx3Mps9ah4lVTr3NG"
 #fi
-sudo dpkg -i --force-all ./install/tinyxml2.deb
+sudo dpkg -i ./install/tinyxml2.deb
 
 message "Installing precompiled compatible version of opencv3 (raspi 0,1,2 compatible)..."
 #if [ ! -f ./install/opencv.deb]; then
 	curl -L -o install/opencv.deb "https://drive.google.com/uc?export=download&id=1i8RBgxMXuCMxyIPgjWoHWeX7xmEmuM23"
 #fi
-sudo dpkg -i --force-all ./install/opencv.deb
+sudo dpkg -i ./install/opencv.deb
 
-message "Installing precompiled version of ros melodic desktop + perception + robot + joy(stick)..."
+message "Installing precompiled version of ros melodic + perception + robot + joy(stick)..."
 #if [ ! -f ./install/ros_desktop.tar.bz2]; then
 	curl -L -o install/ros_desktop.tar.bz2 "https://drive.google.com/uc?export=download&id=1ffIgOm6M6TicZbAcWjK7va_A33rBHrs4"
 #fi
@@ -233,13 +233,9 @@ cd ~/toddthequad
 
 message "Configuring Samba filesharing..."
 sudo systemctl stop smbd
-sudo cp install/smb.conf /etc/samba/smb.conf
+sudo cp ./install/smb.conf /etc/samba/smb.conf
 
-message "Now, please enter in a samba (windows filesharing) password for use"
-sudo smbpasswd -a pi
-sudo systemctl start smbd
-
-message "Installing create_ap (Raspi as an access point)..."
+message "Installing create_ap (Raspi as a wifi access point)..."
 # https://github.com/oblique/create_ap
 sudo apt install -y \
 	util-linux \
@@ -262,6 +258,10 @@ sh ~/.bashrc
 cd ~/toddthequad
 catkin_make
 sh ~/.bashrc
+
+message "Now, please enter in a samba (windows filesharing) password for use"
+sudo smbpasswd -a pi
+sudo systemctl start smbd
 
 message "\
 \n\
